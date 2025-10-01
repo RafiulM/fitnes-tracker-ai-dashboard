@@ -30,14 +30,12 @@ src/
 ├── components/
 │   ├── ui/                # shadcn/ui components (40+ components)
 │   ├── chat.tsx           # AI chat interface
-│   ├── setup-guide.tsx    # Configuration guide
 │   ├── theme-provider.tsx # Theme context provider
 │   └── theme-toggle.tsx   # Dark mode toggle components
 ├── lib/
 │   ├── utils.ts           # Utility functions (cn, etc.)
 │   ├── supabase.ts        # Supabase client configurations
-│   ├── user.ts            # User utilities using Clerk
-│   └── env-check.ts       # Environment validation
+│   └── user.ts            # User utilities using Clerk
 └── middleware.ts          # Clerk authentication middleware
 ```
 

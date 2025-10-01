@@ -1,28 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Parkinsans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
   subsets: ["latin"],
+  variable: "--font-inter",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-});
-
-const parkinsans = Parkinsans({
-  variable: "--font-parkinsans",
-  subsets: ["latin"],
+  variable: "--font-jetbrains",
 });
 
 export const metadata: Metadata = {
-  title: "CodeGuide Starter Kit",
+  title: "FitPulse AI",
   description:
-    "A modern Next.js starter with TypeScript, TailwindCSS, shadcn/ui, Vercel AI SDK, Clerk, and Supabase",
+    "Chat-first fitness tracking with AI-assisted logging, insights, and planning.",
 };
 
 export default function RootLayout({
@@ -33,9 +28,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} ${parkinsans.variable} antialiased`}
-        >
+        <body className={`${inter.variable} ${jetBrainsMono.variable} antialiased`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

@@ -17,13 +17,25 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 
 export async function createSupabaseServerClient() {
   const { getToken } = await auth();
-  const token = await getToken();
+
+  let token: string | null = null;
+
+  if (getToken) {
+    try {
+      token = await getToken({ template: "supabase" });
+    } catch (error) {
+      console.warn("Supabase token template unavailable, falling back to default token", error);
+      token = await getToken().catch(() => null);
+    }
+  }
 
   return createClient(supabaseUrl, supabaseAnonKey, {
     global: {
-      headers: {
-        Authorization: token ? `Bearer ${token}` : "",
-      },
+      headers: token
+        ? {
+            Authorization: `Bearer ${token}`,
+          }
+        : undefined,
       fetch: (url, options = {}) => {
         return fetch(url, {
           ...options,

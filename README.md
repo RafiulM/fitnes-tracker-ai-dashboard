@@ -131,8 +131,7 @@ codeguide-starter-kit/
 │   ├── lib/                   # Utility functions
 │   │   ├── supabase.ts        # Supabase client with Clerk auth
 │   │   ├── user.ts            # User utilities
-│   │   ├── utils.ts           # General utilities
-│   │   └── env-check.ts       # Environment validation
+│   │   └── utils.ts           # General utilities
 │   └── middleware.ts          # Clerk route protection
 ├── supabase/
 │   └── migrations/            # Database migrations with RLS examples

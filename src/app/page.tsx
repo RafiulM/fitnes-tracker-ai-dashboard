@@ -1,191 +1,115 @@
-"use client";
-
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import Chat from "@/components/chat";
-import { Card } from "@/components/ui/card";
+import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { checkEnvironmentVariables } from "@/lib/env-check";
-import {
-  Copy,
-  CheckCircle,
-  AlertCircle,
-  Zap,
-  Database,
-  Shield,
-  ExternalLink,
-} from "lucide-react";
-import { ThemeToggle } from "@/components/theme-toggle";
-import Image from "next/image";
+import { Card, CardContent } from "@/components/ui/card";
+import { Activity, LineChart, MessageCircle, UtensilsCrossed } from "lucide-react";
 
-export default function Home() {
-  const envStatus = checkEnvironmentVariables();
+const featureHighlights = [
+  {
+    title: "Chat-First Logging",
+    description:
+      "Log weight, body fat, workouts, and meals simply by talking to your personal AI coach.",
+    icon: MessageCircle,
+  },
+  {
+    title: "Insightful Dashboard",
+    description:
+      "Track weight trends, body composition, training volume, and nutrition with interactive visuals.",
+    icon: LineChart,
+  },
+  {
+    title: "Personalized Plans",
+    description:
+      "Generate fresh workout or diet plans tailored to your latest stats whenever you need inspiration.",
+    icon: UtensilsCrossed,
+  },
+];
+
+export default async function HomePage() {
+  const { userId } = await auth();
+
+  if (userId) {
+    redirect("/chat");
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      {/* Hero Section */}
-      <div className="text-center py-12 sm:py-16 relative px-4">
-        <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <ThemeToggle />
-            <SignedOut>
-              <SignInButton>
-                <Button size="sm" className="text-xs sm:text-sm">
-                  Sign In
-                </Button>
-              </SignInButton>
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </div>
-        </div>
+    <main className="relative min-h-[100vh] overflow-hidden bg-gradient-to-br from-primary/5 via-background to-background">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(220,38,38,0.15),_transparent_55%)]" />
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4">
-          <Image
-            src="/codeguide-logo.png"
-            alt="CodeGuide Logo"
-            width={50}
-            height={50}
-            className="rounded-xl sm:w-[60px] sm:h-[60px]"
-          />
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 bg-clip-text text-transparent font-parkinsans">
-            CodeGuide Starter
+      <section className="relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-16 px-4 py-20 sm:px-6 lg:px-8">
+        <header className="mx-auto flex max-w-3xl flex-col items-center text-center">
+          <span className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+            Fitness Tracking Reimagined
+          </span>
+          <h1 className="mt-6 text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+            Chat with your coach. See your progress. Stay accountable.
           </h1>
-        </div>
-        <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
-          Build faster with your AI coding agent
-        </p>
-      </div>
+          <p className="mt-4 text-lg text-muted-foreground">
+            FitPulse AI combines a conversational fitness tracker with a data-rich dashboard so you can log stats effortlessly and make smarter decisions fast.
+          </p>
+          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
+            <Button size="lg" className="w-full sm:w-auto" asChild>
+              <Link href="/sign-up">
+                Create your account
+              </Link>
+            </Button>
+            <Button size="lg" variant="outline" className="w-full sm:w-auto" asChild>
+              <Link href="/sign-in">Log in</Link>
+            </Button>
+          </div>
+        </header>
 
-      <main className="container mx-auto px-4 sm:px-6 pb-12 sm:pb-8 max-w-5xl">
-        {envStatus.allConfigured ? (
-          <div className="text-center mb-8">
-            <div className="text-4xl sm:text-5xl mb-2">🎉</div>
-            <div className="font-bold text-lg sm:text-xl mb-1">All Set!</div>
-            <div className="text-sm sm:text-base text-muted-foreground">
-              Ready for development
+        <div className="grid gap-6 md:grid-cols-3">
+          {featureHighlights.map(({ title, description, icon: Icon }) => (
+            <Card key={title} className="border-primary/10 bg-card/90 shadow-sm shadow-primary/5">
+              <CardContent className="space-y-4 p-6">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <Icon className="h-6 w-6" />
+                </span>
+                <div className="space-y-2">
+                  <h2 className="text-xl font-semibold text-foreground">{title}</h2>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {description}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <section className="grid gap-8 rounded-3xl border border-primary/15 bg-card/80 p-8 shadow-lg shadow-primary/10 md:grid-cols-2">
+          <div className="space-y-4">
+            <h2 className="text-2xl font-semibold">
+              Built for consistency, guided by intelligence
+            </h2>
+            <p className="text-muted-foreground">
+              Every conversation enriches your personal dataset. Supabase keeps it secure, the dashboard turns it into insight, and our AI coach keeps you moving toward your goals with actionable nudges.
+            </p>
+            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+              <Activity className="h-5 w-5 text-primary" />
+              <span>Encrypted storage, row-level privacy, and fast feedback.</span>
             </div>
           </div>
-        ) : (
-          <>
-            <div className="text-center mb-6">
-              <div className="text-4xl sm:text-5xl mb-2">⚠️</div>
-              <div className="font-semibold text-lg sm:text-xl mb-1">
-                Setup Required
-              </div>
-              <div className="text-sm sm:text-base text-muted-foreground">
-                Retrieve keys for environment variables
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-              {/* Clerk */}
-              <div className="text-center p-3 sm:p-4 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10">
-                <div className="flex justify-center mb-3">
-                  {envStatus.clerk ? (
-                    <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
-                  ) : (
-                    <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
-                  )}
-                </div>
-                <div className="font-semibold mb-2 text-sm sm:text-base">
-                  Clerk Auth
-                </div>
-                <div className="text-xs text-muted-foreground mb-3">
-                  {envStatus.clerk ? "✓ Ready" : "Setup required"}
-                </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    window.open("https://dashboard.clerk.com", "_blank")
-                  }
-                  className="w-full text-xs sm:text-sm"
-                >
-                  <ExternalLink className="w-3 h-3 mr-1" />
-                  Dashboard
-                </Button>
-              </div>
-
-              {/* Supabase */}
-              <div className="text-center p-3 sm:p-4 rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/10 dark:to-emerald-900/10">
-                <div className="flex justify-center mb-3">
-                  {envStatus.supabase ? (
-                    <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
-                  ) : (
-                    <Database className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
-                  )}
-                </div>
-                <div className="font-semibold mb-2 text-sm sm:text-base">
-                  Supabase DB
-                </div>
-                <div className="text-xs text-muted-foreground mb-3">
-                  {envStatus.supabase ? "✓ Ready" : "Setup required"}
-                </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    window.open("https://supabase.com/dashboard", "_blank")
-                  }
-                  className="w-full text-xs sm:text-sm"
-                >
-                  <ExternalLink className="w-3 h-3 mr-1" />
-                  Dashboard
-                </Button>
-              </div>
-
-              {/* AI */}
-              <div className="text-center p-3 sm:p-4 rounded-lg bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/10 dark:to-pink-900/10 sm:col-span-2 md:col-span-1">
-                <div className="flex justify-center mb-3">
-                  {envStatus.ai ? (
-                    <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
-                  ) : (
-                    <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-purple-500" />
-                  )}
-                </div>
-                <div className="font-semibold mb-2 text-sm sm:text-base">
-                  AI SDK
-                </div>
-                <div className="text-xs text-muted-foreground mb-3">
-                  {envStatus.ai ? "✓ Ready" : "Optional"}
-                </div>
-                <div className="grid grid-cols-2 gap-1 sm:gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() =>
-                      window.open("https://platform.openai.com", "_blank")
-                    }
-                    className="text-xs px-1 sm:px-2"
-                  >
-                    OpenAI
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() =>
-                      window.open("https://console.anthropic.com", "_blank")
-                    }
-                    className="text-xs px-1 sm:px-2"
-                  >
-                    Anthropic
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* Chat Section */}
-        <SignedIn>
-          {envStatus.allConfigured && (
-            <div className="mt-6 sm:mt-8">
-              <Chat />
-            </div>
-          )}
-        </SignedIn>
-      </main>
-    </div>
+          <div className="space-y-3 rounded-2xl bg-secondary/60 p-6 text-sm text-secondary-foreground">
+            <h3 className="text-lg font-medium text-foreground">What to expect</h3>
+            <ul className="space-y-3">
+              <li>
+                <span className="font-semibold text-foreground">1. </span>
+                Chat naturally about today&apos;s workout, meals, or body metrics—no forms necessary.
+              </li>
+              <li>
+                <span className="font-semibold text-foreground">2. </span>
+                Our AI parses every detail and stores it securely in Supabase with instant confirmation.
+              </li>
+              <li>
+                <span className="font-semibold text-foreground">3. </span>
+                Visit the dashboard for trends, or ask for a fresh plan tailored to your latest stats.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </section>
+    </main>
   );
 }
