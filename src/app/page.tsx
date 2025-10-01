@@ -2,188 +2,134 @@
 
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Chat from "@/components/chat";
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { checkEnvironmentVariables } from "@/lib/env-check";
 import {
-  Copy,
-  CheckCircle,
-  AlertCircle,
+  Dumbbell,
+  TrendingUp,
+  Activity,
   Zap,
-  Database,
-  Shield,
-  ExternalLink,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
-  const envStatus = checkEnvironmentVariables();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      {/* Hero Section */}
-      <div className="text-center py-12 sm:py-16 relative px-4">
-        <div className="absolute top-4 right-4 sm:top-6 sm:right-6">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <ThemeToggle />
-            <SignedOut>
-              <SignInButton>
-                <Button size="sm" className="text-xs sm:text-sm">
-                  Sign In
-                </Button>
-              </SignInButton>
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
+    <div className="min-h-screen bg-background">
+      {/* Navigation Header */}
+      <header className="border-b bg-card">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Dumbbell className="h-6 w-6 text-red-600" />
+              <h1 className="text-xl font-bold">FitTrack AI</h1>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <SignedIn>
+                <nav className="hidden md:flex items-center gap-6">
+                  <Link
+                    href="/"
+                    className="text-sm font-medium text-red-600 hover:text-red-700"
+                  >
+                    Chat
+                  </Link>
+                  <Link
+                    href="/dashboard"
+                    className="text-sm font-medium hover:text-red-700"
+                  >
+                    Dashboard
+                  </Link>
+                </nav>
+              </SignedIn>
+
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <SignedOut>
+                  <SignInButton>
+                    <Button className="bg-red-600 hover:bg-red-700">
+                      Sign In
+                    </Button>
+                  </SignInButton>
+                </SignedOut>
+                <SignedIn>
+                  <UserButton />
+                </SignedIn>
+              </div>
+            </div>
           </div>
         </div>
+      </header>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-4">
-          <Image
-            src="/codeguide-logo.png"
-            alt="CodeGuide Logo"
-            width={50}
-            height={50}
-            className="rounded-xl sm:w-[60px] sm:h-[60px]"
-          />
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-blue-600 via-blue-500 to-blue-400 bg-clip-text text-transparent font-parkinsans">
-            CodeGuide Starter
-          </h1>
-        </div>
-        <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
-          Build faster with your AI coding agent
-        </p>
-      </div>
-
-      <main className="container mx-auto px-4 sm:px-6 pb-12 sm:pb-8 max-w-5xl">
-        {envStatus.allConfigured ? (
-          <div className="text-center mb-8">
-            <div className="text-4xl sm:text-5xl mb-2">🎉</div>
-            <div className="font-bold text-lg sm:text-xl mb-1">All Set!</div>
-            <div className="text-sm sm:text-base text-muted-foreground">
-              Ready for development
+      <main className="container mx-auto px-4 py-8 max-w-4xl">
+        <SignedOut>
+          {/* Landing Page */}
+          <div className="text-center py-16">
+            <div className="flex justify-center mb-6">
+              <div className="p-4 bg-red-100 rounded-full dark:bg-red-900/20">
+                <Dumbbell className="h-12 w-12 text-red-600" />
+              </div>
             </div>
+
+            <h1 className="text-4xl font-bold mb-4">
+              Your AI Fitness Companion
+            </h1>
+            <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Track your fitness journey with natural language. Simply chat about your workouts, meals, and measurements.
+            </p>
+
+            <div className="grid md:grid-cols-3 gap-8 mb-12">
+              <div className="text-center">
+                <div className="p-3 bg-blue-100 rounded-full w-12 h-12 mx-auto mb-4 dark:bg-blue-900/20">
+                  <Activity className="h-6 w-6 text-blue-600" />
+                </div>
+                <h3 className="font-semibold mb-2">Chat-Based Logging</h3>
+                <p className="text-sm text-muted-foreground">
+                  &quot;I did 4x10 squats at 135 lbs&quot; - it&apos;s that simple
+                </p>
+              </div>
+
+              <div className="text-center">
+                <div className="p-3 bg-green-100 rounded-full w-12 h-12 mx-auto mb-4 dark:bg-green-900/20">
+                  <TrendingUp className="h-6 w-6 text-green-600" />
+                </div>
+                <h3 className="font-semibold mb-2">Visual Progress</h3>
+                <p className="text-sm text-muted-foreground">
+                  Charts and insights about your fitness journey
+                </p>
+              </div>
+
+              <div className="text-center">
+                <div className="p-3 bg-purple-100 rounded-full w-12 h-12 mx-auto mb-4 dark:bg-purple-900/20">
+                  <Zap className="h-6 w-6 text-purple-600" />
+                </div>
+                <h3 className="font-semibold mb-2">AI-Generated Plans</h3>
+                <p className="text-sm text-muted-foreground">
+                  Personalized workout and diet plans on demand
+                </p>
+              </div>
+            </div>
+
+  
+            <SignInButton>
+              <Button size="lg" className="bg-red-600 hover:bg-red-700">
+                Get Started
+              </Button>
+            </SignInButton>
           </div>
-        ) : (
-          <>
-            <div className="text-center mb-6">
-              <div className="text-4xl sm:text-5xl mb-2">⚠️</div>
-              <div className="font-semibold text-lg sm:text-xl mb-1">
-                Setup Required
-              </div>
-              <div className="text-sm sm:text-base text-muted-foreground">
-                Retrieve keys for environment variables
-              </div>
-            </div>
+        </SignedOut>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
-              {/* Clerk */}
-              <div className="text-center p-3 sm:p-4 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/10 dark:to-indigo-900/10">
-                <div className="flex justify-center mb-3">
-                  {envStatus.clerk ? (
-                    <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
-                  ) : (
-                    <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
-                  )}
-                </div>
-                <div className="font-semibold mb-2 text-sm sm:text-base">
-                  Clerk Auth
-                </div>
-                <div className="text-xs text-muted-foreground mb-3">
-                  {envStatus.clerk ? "✓ Ready" : "Setup required"}
-                </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    window.open("https://dashboard.clerk.com", "_blank")
-                  }
-                  className="w-full text-xs sm:text-sm"
-                >
-                  <ExternalLink className="w-3 h-3 mr-1" />
-                  Dashboard
-                </Button>
-              </div>
-
-              {/* Supabase */}
-              <div className="text-center p-3 sm:p-4 rounded-lg bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/10 dark:to-emerald-900/10">
-                <div className="flex justify-center mb-3">
-                  {envStatus.supabase ? (
-                    <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
-                  ) : (
-                    <Database className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
-                  )}
-                </div>
-                <div className="font-semibold mb-2 text-sm sm:text-base">
-                  Supabase DB
-                </div>
-                <div className="text-xs text-muted-foreground mb-3">
-                  {envStatus.supabase ? "✓ Ready" : "Setup required"}
-                </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    window.open("https://supabase.com/dashboard", "_blank")
-                  }
-                  className="w-full text-xs sm:text-sm"
-                >
-                  <ExternalLink className="w-3 h-3 mr-1" />
-                  Dashboard
-                </Button>
-              </div>
-
-              {/* AI */}
-              <div className="text-center p-3 sm:p-4 rounded-lg bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/10 dark:to-pink-900/10 sm:col-span-2 md:col-span-1">
-                <div className="flex justify-center mb-3">
-                  {envStatus.ai ? (
-                    <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-green-500" />
-                  ) : (
-                    <Zap className="w-6 h-6 sm:w-8 sm:h-8 text-purple-500" />
-                  )}
-                </div>
-                <div className="font-semibold mb-2 text-sm sm:text-base">
-                  AI SDK
-                </div>
-                <div className="text-xs text-muted-foreground mb-3">
-                  {envStatus.ai ? "✓ Ready" : "Optional"}
-                </div>
-                <div className="grid grid-cols-2 gap-1 sm:gap-2">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() =>
-                      window.open("https://platform.openai.com", "_blank")
-                    }
-                    className="text-xs px-1 sm:px-2"
-                  >
-                    OpenAI
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() =>
-                      window.open("https://console.anthropic.com", "_blank")
-                    }
-                    className="text-xs px-1 sm:px-2"
-                  >
-                    Anthropic
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* Chat Section */}
         <SignedIn>
-          {envStatus.allConfigured && (
-            <div className="mt-6 sm:mt-8">
-              <Chat />
+          {/* Chat Interface */}
+          <div>
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2">Welcome back!</h2>
+              <p className="text-muted-foreground">
+                Tell me about your workout, meal, or measurements in natural language.
+              </p>
             </div>
-          )}
+            <Chat />
+          </div>
         </SignedIn>
       </main>
     </div>
